@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Styling;
@@ -54,12 +55,24 @@ namespace Vcpkg.Gui.App
                 Margin = new Thickness(4),
                 Width = 128
             };
-            searchBox.KeyDown += (sender, e)=>
-            {
-
-            };
+            searchBox.KeyUp += SearchBox_KeyUp;
             return searchBox;
         }
+
+        private void SearchBox_KeyUp(object? sender, KeyEventArgs e)
+        {
+            
+            var text = (sender as TextBox).Text;
+            var packageInfos = GetPackageInfosFunction?.Invoke();
+
+            var items = packageInfos.Where(pi =>
+            {
+                return pi.Name.Contains(text) ||
+                pi.Description.Any(d=>d.Contains(text));
+            });
+            _fillSearchResult(items);
+        }
+
         Button _createRefreshButton()
         {
             var button = new Button()
@@ -73,7 +86,7 @@ namespace Vcpkg.Gui.App
             };
             return button;
         }
-        
+
         ListBox _createListBox()
         {
             var listBox = new ListBox()
@@ -84,7 +97,7 @@ namespace Vcpkg.Gui.App
         }
 
 
-        
+
         public Func<IEnumerable<IPackageInfo>> GetPackageInfosFunction { get; set; }
         public void Refresh()
         {
