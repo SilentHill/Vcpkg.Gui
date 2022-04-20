@@ -24,6 +24,9 @@ namespace Vcpkg.Gui.App
             Title = "VCPKG GUI";
             _rootGrid = _createRootGrid();
 
+            _sourceBoard = _createSourceBoard();
+            _installedBoard = _createInstalledBoard();
+
             _toolbar = _createToolBar();
             _rootGrid.Children.Add(_toolbar);
             Grid.SetRow(_toolbar, 0);
@@ -32,8 +35,6 @@ namespace Vcpkg.Gui.App
             _rootGrid.Children.Add(_FilterTabControl);
             Grid.SetRow(_FilterTabControl, 1);
 
-            _sourceBoard = _createSourceBoard();
-            _installedBoard = _createInstalledBoard();
             
 
             Content = _rootGrid;
@@ -46,12 +47,12 @@ namespace Vcpkg.Gui.App
             return grid;
         }
 
-        private VcpkgGuiMainToolbar _createToolBar()
+        private VcpkgGuiMainToolBoard _createToolBar()
         {
-            var toolbar = new VcpkgGuiMainToolbar();
+            var toolbar = new VcpkgGuiMainToolBoard();
             return toolbar;
         }
-        private VcpkgGuiMainToolbar _toolbar { get; }
+        private VcpkgGuiMainToolBoard _toolbar { get; }
         private PackageInfoBoard _createSourceBoard()
         {
             var packageBriefList = new PackageInfoBoard()
