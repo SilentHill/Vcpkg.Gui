@@ -16,6 +16,10 @@ namespace Vcpkg.Gui.App
     public static class WidgetDataTemplates
     {
         public static FuncDataTemplate<IPackageInfo> PackageInfoItem { get; } = _createPackageInfoItemTemplate();
+        private static NameConverter _nameConverter { get; } = new NameConverter();
+        private static VersionConverter _versionConverter { get; } = new VersionConverter();
+        private static PortVersionConverter _portConverter { get; } = new PortVersionConverter();
+        private static DescriptionConverter _descriptionConverter { get; } = new DescriptionConverter();
         private static FuncDataTemplate<IPackageInfo> _createPackageInfoItemTemplate()
         {
             var dt = new FuncDataTemplate<IPackageInfo>(
@@ -25,21 +29,21 @@ namespace Vcpkg.Gui.App
                    {
                        [!TextBlock.TextProperty] = new Binding(nameof(IPackageInfo.Name))
                        {
-                           Converter = new NameConverter()
+                           Converter = _nameConverter
                        },
                    };
                    var versionTb = new TextBlock
                    {
                        [!TextBlock.TextProperty] = new Binding(nameof(IPackageInfo.Version))
                        {
-                           Converter = new VersionConverter()
+                           Converter = _versionConverter
                        },
                    };
                    var portVersionTb = new TextBlock
                    {
                        [!TextBlock.TextProperty] = new Binding(nameof(IPackageInfo.PortVersion))
                        {
-                           Converter = new PortVersionConverter()
+                           Converter = _portConverter
                        },
                    };
                    var descriptionTb = new TextBlock
@@ -47,7 +51,7 @@ namespace Vcpkg.Gui.App
                        TextWrapping = TextWrapping.WrapWithOverflow,
                        [!TextBlock.TextProperty] = new Binding(nameof(IPackageInfo.Description))
                        {
-                           Converter = new DescriptionConverter()
+                           Converter = _descriptionConverter
                        },
                    };
                    var briefPanel = new StackPanel()
