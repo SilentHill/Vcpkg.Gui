@@ -61,7 +61,6 @@ namespace Vcpkg.Gui.App
 
         private void SearchBox_KeyUp(object? sender, KeyEventArgs e)
         {
-            
             var text = (sender as TextBox).Text;
             var packageInfos = GetPackageInfosFunction?.Invoke();
 

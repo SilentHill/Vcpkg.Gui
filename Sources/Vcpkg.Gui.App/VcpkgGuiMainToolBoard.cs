@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Layout;
+using Avalonia;
 
 namespace Vcpkg.Gui.App
 {
@@ -14,14 +15,19 @@ namespace Vcpkg.Gui.App
         public VcpkgGuiMainToolBoard()
         {
             _menu = _createMenu();
+
+            _vcpkgRootSettingItem = _createVcpkgRootSettingItem();
+            _vcpkgIsChineseRootSettingItem = _createUseCacheForVcpkgSearchResult();
+            _cmakeRootSettingItem = _createCmakeRootSettingItem();
             _toolBar = _createToolBar();
             _rootGrid = _createRootGrid();
 
             Grid.SetRow(_menu, 0);
             _rootGrid.Children.Add(_menu);
-            Grid.SetRow(_menu, 1);
+            Grid.SetRow(_toolBar, 1);
             _rootGrid.Children.Add(_toolBar);
             Content = _rootGrid;
+
         }
 
         private Grid _createRootGrid()
@@ -32,9 +38,38 @@ namespace Vcpkg.Gui.App
             return grid;
         }
         private Grid _rootGrid { get; }
+
+        private SettingItem _vcpkgRootSettingItem { get; }
+        private SettingItem _vcpkgIsChineseRootSettingItem { get; }
+        private SettingItem _cmakeRootSettingItem { get; }
+        SettingItem _createUseCacheForVcpkgSearchResult()
+        {
+            var item = new SettingItem(SettingItemType.Toggle, "Enable cache for Search", true);
+            return item;
+        }
+        SettingItem _createVcpkgRootSettingItem()
+        {
+            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", @"C:\vcpkg");
+            return item;
+        }
+        SettingItem _createCmakeRootSettingItem()
+        {
+            var item = new SettingItem(SettingItemType.Text, "CMake root path", @"C:\CMake");
+            return item;
+        }
         private StackPanel _createToolBar()
         {
-            var stackPanel = new StackPanel();
+            var stackPanel = new StackPanel()
+            {
+                Margin = new Thickness(16),
+                Orientation = Orientation.Vertical,
+                Children =
+                {
+                    _vcpkgRootSettingItem,
+                    _cmakeRootSettingItem,
+                    _vcpkgIsChineseRootSettingItem
+                }
+            };
             return stackPanel;
         }
         private StackPanel _toolBar { get; }
@@ -43,9 +78,9 @@ namespace Vcpkg.Gui.App
             var menu = new Menu()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Width = 200
+                //Width = 200
             };
-            menu.Items = new List<String> { "This", "is", "Gui", "Menu" };
+            menu.Items = new List<String> { "File", "View", "Build", "Tools", "Help"};
             return menu;
         }
         private Menu _menu { get; }

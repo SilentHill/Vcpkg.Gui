@@ -83,13 +83,13 @@ namespace Vcpkg.Gui.App
 
             var sourceBoardItem = new TabItem()
             {
-                Header = "全部",
+                Header = "All",
                 Content = _sourceBoard,
             };
             tabItemList.Add(sourceBoardItem);
             var installedBoardItem = new TabItem()
             {
-                Header = "已安装",
+                Header = "Installed",
                 Content = _installedBoard,
             };
             tabItemList.Add(installedBoardItem);
