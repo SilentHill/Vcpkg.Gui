@@ -21,9 +21,9 @@ namespace Vcpkg.Core
         private String? _vcpkgBinPath = "vcpkg.exe";
 
 
-        public SearchResult ForceSearch(string searchPattern)
+        public async Task<SearchResult> ForceSearchAsync(string searchPattern)
         {
-            var searchResultJson = RunVcpkg($"search {searchPattern} --x-full-desc --x-json");
+            var searchResultJson = await RunVcpkgAsync($"search {searchPattern} --x-full-desc --x-json");
             var searchResult = new SearchResult()
             {
                 SourcePackageInfos = JsonSerializer.Deserialize<Dictionary<String, SourcePackageInfo>>(searchResultJson)
@@ -35,7 +35,7 @@ namespace Vcpkg.Core
         {
             return $"SEARCH_{searchPatten}";
         }
-        public SearchResult Search(string searchPattern)
+        public async Task<SearchResult> SearchAsync(string searchPattern)
         {
             // 取缓存
             var cacheKey = GetSearchCacheKey(searchPattern);
@@ -48,18 +48,18 @@ namespace Vcpkg.Core
             else
             {
                 // 没有缓存，重新获取
-                var searchResult = ForceSearch(searchPattern);
+                var searchResult = await ForceSearchAsync(searchPattern);
 
                 // 加10分钟缓存
-                var expireOffset = new DateTimeOffset(DateTime.UtcNow + new TimeSpan(0,10,0), new TimeSpan(0));
+                var expireOffset = new DateTimeOffset(DateTime.UtcNow + new TimeSpan(0, 10, 0), new TimeSpan(0));
                 cache.Set(cacheKey, searchResult, expireOffset);
                 return searchResult;
             }
         }
 
-        public ListResult ForceList()
+        public async Task<ListResult> ForceListAsync()
         {
-            var listResultJson = RunVcpkg($"list --x-full-desc --x-json");
+            var listResultJson = await RunVcpkgAsync($"list --x-full-desc --x-json");
             var listResult = new ListResult()
             {
                 InstalledPackagesInfos = JsonSerializer.Deserialize<Dictionary<String, InstalledPackageInfo>>(listResultJson)
@@ -70,7 +70,7 @@ namespace Vcpkg.Core
         {
             return $"LIST_";
         }
-        public ListResult List()
+        public async Task<ListResult> ListAsync()
         {
             // 取缓存
             var cacheKey = GetListCacheKey();
@@ -83,7 +83,7 @@ namespace Vcpkg.Core
             else
             {
                 // 没有缓存，重新获取
-                var listResult = ForceList();
+                var listResult = await ForceListAsync();
 
                 // 加10分钟缓存
                 var expireOffset = new DateTimeOffset(DateTime.UtcNow + new TimeSpan(0, 10, 0), new TimeSpan(0));
@@ -93,7 +93,7 @@ namespace Vcpkg.Core
         }
 
 
-        private String? RunVcpkg(String args)
+        private async Task<String> RunVcpkgAsync(String args)
         {
             String outputString = String.Empty;
             var process = new Process();
@@ -106,7 +106,7 @@ namespace Vcpkg.Core
             process.OutputDataReceived += (sender, args) => outputString += args.Data;
             process.Start();
             process.BeginOutputReadLine();
-            process.WaitForExit();
+            await process.WaitForExitAsync();
             return outputString;
         }
     }

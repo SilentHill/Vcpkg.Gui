@@ -59,10 +59,10 @@ namespace Vcpkg.Gui.App
             return searchBox;
         }
 
-        private void SearchBox_KeyUp(object? sender, KeyEventArgs e)
+        private async void SearchBox_KeyUp(object? sender, KeyEventArgs e)
         {
             var text = (sender as TextBox).Text;
-            var packageInfos = GetPackageInfosFunction?.Invoke();
+            var packageInfos = await GetPackageInfosFunction?.Invoke();
 
             var items = packageInfos.Where(pi =>
             {
@@ -79,12 +79,16 @@ namespace Vcpkg.Gui.App
                 Margin = new Thickness(4),
                 Content = "Refresh"
             };
-            button.Click += (sender, e) =>
-            {
-                Refresh();
-            };
+            button.Click += Button_Click;
             return button;
         }
+
+        private async void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            await RefreshAsync();
+        }
+
+        
 
         ListBox _createListBox()
         {
@@ -97,14 +101,15 @@ namespace Vcpkg.Gui.App
 
 
 
-        public Func<IEnumerable<IPackageInfo>> GetPackageInfosFunction { get; set; }
-        public void Refresh()
+        public Func<Task<IEnumerable<IPackageInfo>>> GetPackageInfosFunction { get; set; }
+        public async Task RefreshAsync()
         {
-            var packageInfos = GetPackageInfosFunction?.Invoke();
+            var packageInfos = await GetPackageInfosFunction?.Invoke();
             if (packageInfos != null)
             {
                 _fillSearchResult(packageInfos);
             }
+            return;
         }
         private void _fillSearchResult(IEnumerable<IPackageInfo> packageInfos)
         {

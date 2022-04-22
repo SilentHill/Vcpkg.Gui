@@ -18,13 +18,13 @@ namespace Vcpkg.Gui.App
     {
         public VcpkgGuiMainWindow()
         {
-            
+            FontFamily = new FontFamily("Microsoft Yahei");
             ExtendClientAreaToDecorationsHint = true;
             ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
             Title = "VCPKG GUI";
             _rootGrid = _createRootGrid();
 
-            
+
             _sourceBoard = _createSourceBoard();
             _installedBoard = _createInstalledBoard();
 
@@ -36,7 +36,7 @@ namespace Vcpkg.Gui.App
             _rootGrid.Children.Add(_FilterTabControl);
             Grid.SetRow(_FilterTabControl, 1);
 
-            
+
 
             Content = _rootGrid;
         }
@@ -59,9 +59,10 @@ namespace Vcpkg.Gui.App
         {
             var packageBriefList = new PackageInfoBoard()
             {
-                GetPackageInfosFunction = () =>
+                GetPackageInfosFunction = async () =>
                 {
-                    return _cliSession.Search("").SourcePackageInfos.Values;
+                    var result = await _cliSession.SearchAsync("");
+                    return result.SourcePackageInfos.Values;
                 }
             };
             return packageBriefList;
@@ -70,9 +71,10 @@ namespace Vcpkg.Gui.App
         {
             var packageBriefList = new PackageInfoBoard()
             {
-                GetPackageInfosFunction = () =>
+                GetPackageInfosFunction = async () =>
                 {
-                    return _cliSession.ForceList().InstalledPackagesInfos.Values;
+                    var result = await _cliSession.ListAsync();
+                    return result.InstalledPackagesInfos.Values;
                 }
             };
             return packageBriefList;
