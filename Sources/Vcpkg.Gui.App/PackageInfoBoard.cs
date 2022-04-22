@@ -30,7 +30,10 @@ namespace Vcpkg.Gui.App
                 Orientation = Orientation.Horizontal,
                 Children =
                 {
-                    _refreshButton, _searchBox
+                    _refreshButton, _searchBox, new Button()
+                    {
+                        Content = "Search"
+                    }
                 }
             };
             _listBox = _createListBox();
@@ -66,6 +69,10 @@ namespace Vcpkg.Gui.App
 
             var items = packageInfos.Where(pi =>
             {
+                if (text is null)
+                {
+                    return true;
+                }
                 return pi.Name.Contains(text) ||
                 pi.Description.Any(d=>d.Contains(text));
             });

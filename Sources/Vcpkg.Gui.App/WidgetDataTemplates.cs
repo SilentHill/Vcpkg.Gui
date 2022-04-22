@@ -25,6 +25,34 @@ namespace Vcpkg.Gui.App
             var dt = new FuncDataTemplate<IPackageInfo>(
                (pi, scope) =>
                {
+                   var gccBuildButton = new Button()
+                   {
+                       Margin = new Avalonia.Thickness(4),
+                       Content = "Build by GCC"
+                   };
+                   var clangBuildButton = new Button()
+                   {
+                       Margin = new Avalonia.Thickness(4),
+                       Content = "Build by Clang"
+                   };
+                   var vcBuildButton = new Button()
+                   {
+                       Margin = new Avalonia.Thickness(4),
+                       Content = "Build by VC"
+                   };
+                   var vcForXPBuildButton = new Button()
+                   {
+                       Margin = new Avalonia.Thickness(4),
+                       Content = "Build by VC for XP"
+                   };
+                   var buttonPanel = new StackPanel()
+                   {
+                       Orientation = Avalonia.Layout.Orientation.Horizontal,
+                       Children =
+                       {
+                           gccBuildButton, clangBuildButton, vcBuildButton, vcForXPBuildButton
+                       }
+                   };
                    var nameTb = new TextBlock
                    {
                        [!TextBlock.TextProperty] = new Binding(nameof(IPackageInfo.Name))
@@ -32,6 +60,7 @@ namespace Vcpkg.Gui.App
                            Converter = _nameConverter
                        },
                    };
+                   
                    var versionTb = new TextBlock
                    {
                        [!TextBlock.TextProperty] = new Binding(nameof(IPackageInfo.Version))
@@ -58,6 +87,7 @@ namespace Vcpkg.Gui.App
                    {
                        Children =
                        {
+                           buttonPanel,
                             nameTb,
                             versionTb,
                             portVersionTb,

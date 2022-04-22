@@ -75,12 +75,12 @@ namespace Vcpkg.Gui.App
         }
         SettingItem _createVcpkgRootSettingItem()
         {
-            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", @"C:\vcpkg");
+            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", @"/usr/share/vcpkg");
             return item;
         }
         SettingItem _createCmakeRootSettingItem()
         {
-            var item = new SettingItem(SettingItemType.Text, "CMake root path", @"C:\CMake");
+            var item = new SettingItem(SettingItemType.Text, "CMake root path", @"/usr/share/cmake");
             return item;
         }
         private StackPanel _createToolBar()

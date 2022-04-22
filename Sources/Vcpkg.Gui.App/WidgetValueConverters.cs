@@ -12,7 +12,7 @@ namespace Vcpkg.Gui.App.WidgetValueConverters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return $"名称：{value}";
+            return $"Name：{value}";
         }
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -23,7 +23,7 @@ namespace Vcpkg.Gui.App.WidgetValueConverters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return $"版本：{value}";
+            return $"Version：{value}";
         }
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -34,7 +34,7 @@ namespace Vcpkg.Gui.App.WidgetValueConverters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return $"导出版本：{value}";
+            return $"Port Version：{value}";
         }
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -45,7 +45,7 @@ namespace Vcpkg.Gui.App.WidgetValueConverters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return $"描述：{String.Join("\n", value as String[])}";
+            return $"Description{String.Join("\n", value as String[])}";
         }
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
