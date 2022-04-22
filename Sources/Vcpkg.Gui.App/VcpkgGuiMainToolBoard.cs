@@ -15,6 +15,7 @@ namespace Vcpkg.Gui.App
         public VcpkgGuiMainToolBoard()
         {
             _menu = _createMenu();
+            _showToolbarSettingItem = _createShowToolbarSettingItem();
 
             _vcpkgRootSettingItem = _createVcpkgRootSettingItem();
             _vcpkgIsChineseRootSettingItem = _createUseCacheForVcpkgSearchResult();
@@ -24,15 +25,40 @@ namespace Vcpkg.Gui.App
 
             Grid.SetRow(_menu, 0);
             _rootGrid.Children.Add(_menu);
-            Grid.SetRow(_toolBar, 1);
+
+            Grid.SetRow(_showToolbarSettingItem, 1);
+            _rootGrid.Children.Add(_showToolbarSettingItem);
+
+            Grid.SetRow(_toolBar, 2);
             _rootGrid.Children.Add(_toolBar);
             Content = _rootGrid;
 
         }
 
+
+        private SettingItem _createShowToolbarSettingItem()
+        {
+            var item = new SettingItem(SettingItemType.Toggle, "Show Settings", true)
+            {
+                Margin = new Thickness(16),
+            };
+            var toggleSwitch = (item.ValueItem as IContentControl).Content as ToggleSwitch;
+            toggleSwitch.Checked += (sender, args) =>
+            {
+                _toolBar.IsVisible = true;
+            };
+            toggleSwitch.Unchecked += (sender, args) =>
+            {
+                _toolBar.IsVisible = false;
+            };
+            return item;
+        }
+        private SettingItem _showToolbarSettingItem { get; }
+
         private Grid _createRootGrid()
         {
             var grid = new Grid();
+            grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             return grid;

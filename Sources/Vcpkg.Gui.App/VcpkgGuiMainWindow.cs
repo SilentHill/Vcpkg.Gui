@@ -24,6 +24,7 @@ namespace Vcpkg.Gui.App
             Title = "VCPKG GUI";
             _rootGrid = _createRootGrid();
 
+            
             _sourceBoard = _createSourceBoard();
             _installedBoard = _createInstalledBoard();
 
@@ -46,6 +47,7 @@ namespace Vcpkg.Gui.App
             grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Star });
             return grid;
         }
+
 
         private VcpkgGuiMainToolBoard _createToolBar()
         {

@@ -19,20 +19,20 @@ namespace Vcpkg.Gui.App
     {
         public SettingItem(SettingItemType itemType, String keyName, object defaultValue)
         {
-            _keyItem = new SettingKeyItem()
+            KeyItem = new SettingKeyItem()
             {
                 ItemKey = keyName,
             };
             switch (itemType)
             {
                 case SettingItemType.Text:
-                    _valueItem = new TextSettingValueItem();
-                    _valueItem.ItemValue = defaultValue;
+                    ValueItem = new TextSettingValueItem();
+                    ValueItem.ItemValue = defaultValue;
 
                     break;
                 case SettingItemType.Toggle:
-                    _valueItem = new ToggleSettingValueItem();
-                    _valueItem.ItemValue = defaultValue;
+                    ValueItem = new ToggleSettingValueItem();
+                    ValueItem.ItemValue = defaultValue;
                     break;
             }
 
@@ -41,13 +41,14 @@ namespace Vcpkg.Gui.App
                 Orientation = Orientation.Horizontal,
                 Children =
                 {
-                    _keyItem, _valueItem
+                    KeyItem, ValueItem
                 }
             };
             Content = rootPanel;
         }
-        private SettingKeyItem _keyItem { get; }
-        private ISettingValueItem _valueItem { get; }
+
+        public SettingKeyItem KeyItem { get; }
+        public ISettingValueItem ValueItem { get; }
     }
 
 
@@ -94,11 +95,11 @@ namespace Vcpkg.Gui.App
         {
             get
             {
-                return _toggleSwitch.IsEnabled;
+                return _toggleSwitch.IsChecked;
             }
             set
             {
-                _toggleSwitch.IsEnabled = (bool)value;
+                _toggleSwitch.IsChecked = (bool)value;
             }
         }
 
