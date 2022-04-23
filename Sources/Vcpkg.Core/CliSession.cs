@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Runtime.Caching;
+using System.Text;
 
 namespace Vcpkg.Core
 {
@@ -103,10 +104,19 @@ namespace Vcpkg.Core
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardOutput = true;
-            process.OutputDataReceived += (sender, args) => outputString += args.Data;
+
+            var sb = new StringBuilder();
+            process.OutputDataReceived += (sender, args) =>
+            {
+                sb.AppendLine(args.Data);
+            };
             process.Start();
+            //outputString = process.StandardOutput.ReadToEnd();
+
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
+
+            outputString = sb.ToString();
             return outputString;
         }
     }

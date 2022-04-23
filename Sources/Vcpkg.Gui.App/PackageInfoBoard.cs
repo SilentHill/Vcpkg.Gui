@@ -7,6 +7,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media;
 using Avalonia.Styling;
 using System;
 using System.Collections.Generic;
@@ -74,7 +75,7 @@ namespace Vcpkg.Gui.App
                     return true;
                 }
                 return pi.Name.Contains(text) ||
-                pi.Description.Any(d=>d.Contains(text));
+                pi.Description.Any(d => d.Contains(text));
             });
             _fillSearchResult(items);
         }
@@ -95,12 +96,14 @@ namespace Vcpkg.Gui.App
             await RefreshAsync();
         }
 
-        
+
 
         ListBox _createListBox()
         {
             var listBox = new ListBox()
             {
+                BorderThickness = new Thickness(4),
+                BorderBrush = Brushes.Red,
                 ItemTemplate = WidgetDataTemplates.PackageInfoItem
             };
             return listBox;

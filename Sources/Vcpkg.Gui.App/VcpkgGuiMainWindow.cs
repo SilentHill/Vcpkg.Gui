@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vcpkg.Core;
 using Avalonia.Platform;
+using Avalonia.Layout;
 
 namespace Vcpkg.Gui.App
 {
@@ -36,18 +37,15 @@ namespace Vcpkg.Gui.App
             _rootGrid.Children.Add(_FilterTabControl);
             Grid.SetRow(_FilterTabControl, 1);
 
-
-
             Content = _rootGrid;
         }
         private Grid _createRootGrid()
         {
             var grid = new Grid();
             grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Star });
+            grid.RowDefinitions.Add(new RowDefinition() );
             return grid;
         }
-
 
         private VcpkgGuiMainToolBoard _createToolBar()
         {
@@ -79,8 +77,9 @@ namespace Vcpkg.Gui.App
             };
             return packageBriefList;
         }
-        private TabControl _createFilterTabControl()
+        private Control _createFilterTabControl()
         {
+            
             var tabControl = new TabControl();
             var tabItemList = new AvaloniaList<TabItem>();
             tabControl.Items = tabItemList;
@@ -97,7 +96,7 @@ namespace Vcpkg.Gui.App
                 Content = _installedBoard,
             };
             tabItemList.Add(installedBoardItem);
-
+            
             return tabControl;
         }
 
@@ -106,7 +105,7 @@ namespace Vcpkg.Gui.App
             VcpkgPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe"
         };
         private Grid _rootGrid { get; }
-        private TabControl _FilterTabControl { get; }
+        private Control _FilterTabControl { get; }
         private PackageInfoBoard _sourceBoard { get; }
         private PackageInfoBoard _installedBoard { get; }
 
