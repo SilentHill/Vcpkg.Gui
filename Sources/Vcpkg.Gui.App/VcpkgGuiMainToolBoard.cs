@@ -7,13 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Layout;
 using Avalonia;
+using Vcpkg.Core;
 
 namespace Vcpkg.Gui.App
 {
     public class VcpkgGuiMainToolBoard : UserControl
     {
-        public VcpkgGuiMainToolBoard()
+        private CliSession _cliSession { get; }
+        public VcpkgGuiMainToolBoard(CliSession cliSession)
         {
+            _cliSession = cliSession;
             _menu = _createMenu();
             _showToolbarSettingItem = _createShowToolbarSettingItem();
 
@@ -75,7 +78,7 @@ namespace Vcpkg.Gui.App
         }
         SettingItem _createVcpkgRootSettingItem()
         {
-            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", @"/usr/share/vcpkg");
+            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", _cliSession.VcpkgPath);
             return item;
         }
         SettingItem _createCmakeRootSettingItem()

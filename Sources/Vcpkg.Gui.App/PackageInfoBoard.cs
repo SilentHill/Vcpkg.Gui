@@ -102,8 +102,8 @@ namespace Vcpkg.Gui.App
         {
             var listBox = new ListBox()
             {
-                BorderThickness = new Thickness(4),
-                BorderBrush = Brushes.Red,
+                //BorderThickness = new Thickness(4),
+                //BorderBrush = Brushes.Red,
                 ItemTemplate = WidgetDataTemplates.PackageInfoItem
             };
             return listBox;

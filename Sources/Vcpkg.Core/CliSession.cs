@@ -8,18 +8,22 @@ namespace Vcpkg.Core
 {
     public class CliSession
     {
-        public String VcpkgPath
+        public CliSession()
         {
-            get
+            if (Helpers.IsWindows())
             {
-                return _vcpkgBinPath;
+                VcpkgPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe";
             }
-            set
+            else if (Helpers.IsLinux())
             {
-                _vcpkgBinPath = value;
+                VcpkgPath = @"~/vcpkg/vcpkg";
+            }
+            else if (Helpers.IsMacOS())
+            {
+
             }
         }
-        private String? _vcpkgBinPath = "vcpkg.exe";
+        public String VcpkgPath { get; set; }
 
 
         public async Task<SearchResult> ForceSearchAsync(string searchPattern)
@@ -99,7 +103,7 @@ namespace Vcpkg.Core
             String outputString = String.Empty;
             var process = new Process();
             process.StartInfo.Arguments = args;
-            process.StartInfo.FileName = _vcpkgBinPath;
+            process.StartInfo.FileName = VcpkgPath;
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;

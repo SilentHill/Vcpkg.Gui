@@ -19,7 +19,7 @@ namespace Vcpkg.Gui.App
     {
         public VcpkgGuiMainWindow()
         {
-            FontFamily = new FontFamily("Microsoft Yahei");
+            //FontFamily = new FontFamily("Microsoft Yahei");
             ExtendClientAreaToDecorationsHint = true;
             ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
             Title = "VCPKG GUI";
@@ -29,7 +29,7 @@ namespace Vcpkg.Gui.App
             _sourceBoard = _createSourceBoard();
             _installedBoard = _createInstalledBoard();
 
-            _toolbar = _createToolBar();
+            _toolbar = _createToolBar(_cliSession);
             _rootGrid.Children.Add(_toolbar);
             Grid.SetRow(_toolbar, 0);
 
@@ -47,9 +47,9 @@ namespace Vcpkg.Gui.App
             return grid;
         }
 
-        private VcpkgGuiMainToolBoard _createToolBar()
+        private VcpkgGuiMainToolBoard _createToolBar(CliSession cliSession)
         {
-            var toolbar = new VcpkgGuiMainToolBoard();
+            var toolbar = new VcpkgGuiMainToolBoard(cliSession);
             return toolbar;
         }
         private VcpkgGuiMainToolBoard _toolbar { get; }
@@ -100,10 +100,7 @@ namespace Vcpkg.Gui.App
             return tabControl;
         }
 
-        private CliSession _cliSession { get; } = new CliSession()
-        {
-            VcpkgPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe"
-        };
+        private CliSession _cliSession { get; } = new CliSession();
         private Grid _rootGrid { get; }
         private Control _FilterTabControl { get; }
         private PackageInfoBoard _sourceBoard { get; }
