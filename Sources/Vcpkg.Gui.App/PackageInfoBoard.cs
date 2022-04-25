@@ -37,10 +37,14 @@ namespace Vcpkg.Gui.App
                     }
                 }
             };
+            DockPanel.SetDock(controlPanel, Dock.Top);
+            
             _listBox = _createListBox();
-            var rootPanel = new StackPanel()
+
+            DockPanel.SetDock(_listBox, Dock.Bottom);
+            var rootPanel = new DockPanel()
             {
-                Orientation = Orientation.Vertical,
+                LastChildFill = true,
                 Children =
                 {
                     controlPanel,
@@ -102,6 +106,7 @@ namespace Vcpkg.Gui.App
         {
             var listBox = new ListBox()
             {
+                
                 //BorderThickness = new Thickness(4),
                 //BorderBrush = Brushes.Red,
                 ItemTemplate = WidgetDataTemplates.PackageInfoItem
