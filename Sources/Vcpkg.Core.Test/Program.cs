@@ -5,12 +5,12 @@ using Vcpkg.Core;
 
 class Program
 {
-    public static void Main(String[] args)
+    public static async Task Main(String[] args)
     {
-		var cli = new CliSession();
-        cli.VcpkgPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe";
+		var cli = new VcpkgSession();
+        cli.CmdletPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe";
         // var searchResult = cli.Search("");
-        var listResult = cli.ForceList();
+        var listResult = await cli.ForceListAsync();
         return;
     }
 }

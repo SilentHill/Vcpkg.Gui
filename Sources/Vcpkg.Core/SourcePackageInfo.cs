@@ -10,11 +10,11 @@ namespace Vcpkg.Core
     public class SourcePackageInfo : IPackageInfo
     {
         [JsonPropertyName("package_name")]
-        public String? Name { get; set; }
+        public String Name { get; set; }
         [JsonPropertyName("version")]
-        public String? Version { get; set; }
+        public String Version { get; set; }
         [JsonPropertyName("port_version")]
-        public Int32? PortVersion { get; set; }
+        public Int32 PortVersion { get; set; }
         [JsonPropertyName("description")]
         public String[]? Description { get; set; }
 

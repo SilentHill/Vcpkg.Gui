@@ -8,9 +8,9 @@ namespace Vcpkg.Core
 {
     public interface IPackageInfo
     {
-        String? Name { get; set; }
-        String? Version { get; set; }
-        Int32? PortVersion { get; set; }
-        String[]? Description { get; set; }
+        String Name { get; set; }
+        String Version { get; set; }
+        Int32 PortVersion { get; set; }
+        String[] Description { get; set; }
     }
 }

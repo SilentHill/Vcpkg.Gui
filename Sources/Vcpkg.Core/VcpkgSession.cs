@@ -6,29 +6,27 @@ using System.Text;
 
 namespace Vcpkg.Core
 {
-    public class CliSession
+    public class VcpkgSession : CmdletSession
     {
-        public CliSession()
+        public VcpkgSession()
         {
             if (Helpers.IsWindows())
             {
-                VcpkgPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe";
+                CmdletPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe";
             }
             else if (Helpers.IsLinux())
             {
-                VcpkgPath = @"~/vcpkg/vcpkg";
+                CmdletPath = @"~/vcpkg/vcpkg";
             }
             else if (Helpers.IsMacOS())
             {
 
             }
         }
-        public String VcpkgPath { get; set; }
-
 
         public async Task<SearchResult> ForceSearchAsync(string searchPattern)
         {
-            var searchResultJson = await RunVcpkgAsync($"search {searchPattern} --x-full-desc --x-json");
+            var searchResultJson = await RunCmdlet($"search {searchPattern} --x-full-desc --x-json");
             var searchResult = new SearchResult()
             {
                 SourcePackageInfos = JsonSerializer.Deserialize<Dictionary<String, SourcePackageInfo>>(searchResultJson)
@@ -40,12 +38,29 @@ namespace Vcpkg.Core
         {
             return $"SEARCH_{searchPatten}";
         }
+        private MemoryCache _memoryCache;
+        private MemoryCache GetMemoryCache()
+        {
+            if (_memoryCache is null)
+            {
+                if (Helpers.IsLinux())
+                {
+                    _memoryCache = MemoryCache.Default;
+                }
+                else
+                {
+
+                    _memoryCache = new MemoryCache("CliSessionCache");
+                }
+            }
+            
+            return _memoryCache;
+        }
         public async Task<SearchResult> SearchAsync(string searchPattern)
         {
             // 取缓存
             var cacheKey = GetSearchCacheKey(searchPattern);
-            var cache = MemoryCache.Default;
-            var searchResultCache = cache.Get(cacheKey) as SearchResult;
+            var searchResultCache = GetMemoryCache().Get(cacheKey) as SearchResult;
             if (searchResultCache != null)
             {
                 return searchResultCache;
@@ -57,14 +72,14 @@ namespace Vcpkg.Core
 
                 // 加10分钟缓存
                 var expireOffset = new DateTimeOffset(DateTime.UtcNow + new TimeSpan(0, 10, 0), new TimeSpan(0));
-                cache.Set(cacheKey, searchResult, expireOffset);
+                GetMemoryCache().Set(cacheKey, searchResult, expireOffset);
                 return searchResult;
             }
         }
 
         public async Task<ListResult> ForceListAsync()
         {
-            var listResultJson = await RunVcpkgAsync($"list --x-full-desc --x-json");
+            var listResultJson = await RunCmdlet($"list --x-full-desc --x-json");
             var listResult = new ListResult()
             {
                 InstalledPackagesInfos = JsonSerializer.Deserialize<Dictionary<String, InstalledPackageInfo>>(listResultJson)
@@ -79,8 +94,7 @@ namespace Vcpkg.Core
         {
             // 取缓存
             var cacheKey = GetListCacheKey();
-            var cache = MemoryCache.Default;
-            var listResultCache = cache.Get(cacheKey) as ListResult;
+            var listResultCache = GetMemoryCache().Get(cacheKey) as ListResult;
             if (listResultCache != null)
             {
                 return listResultCache;
@@ -92,36 +106,10 @@ namespace Vcpkg.Core
 
                 // 加10分钟缓存
                 var expireOffset = new DateTimeOffset(DateTime.UtcNow + new TimeSpan(0, 10, 0), new TimeSpan(0));
-                cache.Set(cacheKey, listResult, expireOffset);
+                GetMemoryCache().Set(cacheKey, listResult, expireOffset);
                 return listResult;
             }
         }
 
-
-        private async Task<String> RunVcpkgAsync(String args)
-        {
-            String outputString = String.Empty;
-            var process = new Process();
-            process.StartInfo.Arguments = args;
-            process.StartInfo.FileName = VcpkgPath;
-            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.RedirectStandardOutput = true;
-
-            var sb = new StringBuilder();
-            process.OutputDataReceived += (sender, args) =>
-            {
-                sb.AppendLine(args.Data);
-            };
-            process.Start();
-            //outputString = process.StandardOutput.ReadToEnd();
-
-            process.BeginOutputReadLine();
-            await process.WaitForExitAsync();
-
-            outputString = sb.ToString();
-            return outputString;
-        }
     }
 }

@@ -13,8 +13,8 @@ namespace Vcpkg.Gui.App
 {
     public class VcpkgGuiMainToolBoard : UserControl
     {
-        private CliSession _cliSession { get; }
-        public VcpkgGuiMainToolBoard(CliSession cliSession)
+        private VcpkgSession _cliSession { get; }
+        public VcpkgGuiMainToolBoard(VcpkgSession cliSession)
         {
             _cliSession = cliSession;
             _menu = _createMenu();
@@ -78,7 +78,7 @@ namespace Vcpkg.Gui.App
         }
         SettingItem _createVcpkgRootSettingItem()
         {
-            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", _cliSession.VcpkgPath);
+            var item  = new SettingItem(SettingItemType.Text, "vcpkg root path", _cliSession.CmdletPath);
             return item;
         }
         SettingItem _createCmakeRootSettingItem()

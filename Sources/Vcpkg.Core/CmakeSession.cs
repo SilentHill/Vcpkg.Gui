@@ -6,19 +6,8 @@ using System.Threading.Tasks;
 
 namespace Vcpkg.Core
 {
-    public class CmakeSession
+    public class CmakeSession : CmdletSession
     {
-        public String CmakePath
-        {
-            get
-            {
-                return _cmakePath;
-            }
-            set
-            {
-                _cmakePath = value;
-            }
-        }
-        private String? _cmakePath = "cmake.exe";
+
     }
 }

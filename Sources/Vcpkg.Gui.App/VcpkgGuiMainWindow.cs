@@ -47,7 +47,7 @@ namespace Vcpkg.Gui.App
             return grid;
         }
 
-        private VcpkgGuiMainToolBoard _createToolBar(CliSession cliSession)
+        private VcpkgGuiMainToolBoard _createToolBar(VcpkgSession cliSession)
         {
             var toolbar = new VcpkgGuiMainToolBoard(cliSession);
             return toolbar;
@@ -100,7 +100,7 @@ namespace Vcpkg.Gui.App
             return tabControl;
         }
 
-        private CliSession _cliSession { get; } = new CliSession();
+        private VcpkgSession _cliSession { get; } = new VcpkgSession();
         private Grid _rootGrid { get; }
         private Control _FilterTabControl { get; }
         private PackageInfoBoard _sourceBoard { get; }
