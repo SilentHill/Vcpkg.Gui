@@ -12,11 +12,11 @@ namespace Vcpkg.Core
         {
             if (Helpers.IsWindows())
             {
-                CmdletPath = @"C:\Users\stdcp\source\repos\vcpkg-2022.04.12\vcpkg.exe";
+                CmdletPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\source\repos\vcpkg-2022.04.12\vcpkg.exe";
             }
             else if (Helpers.IsLinux())
             {
-                CmdletPath = @"~/vcpkg/vcpkg";
+                CmdletPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/vcpkg/vcpkg";
             }
             else if (Helpers.IsMacOS())
             {
@@ -45,12 +45,11 @@ namespace Vcpkg.Core
             {
                 if (Helpers.IsLinux())
                 {
-                    _memoryCache = MemoryCache.Default;
+                    _memoryCache = new MemoryCache("CliSessionCache", null, true);
                 }
                 else
                 {
-
-                    _memoryCache = new MemoryCache("CliSessionCache");
+                    _memoryCache = MemoryCache.Default;
                 }
             }
             
