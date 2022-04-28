@@ -38,11 +38,11 @@ namespace Vcpkg.Gui.App
                 }
             };
             DockPanel.SetDock(controlPanel, Dock.Top);
-            
+
             _listBox = _createListBox();
 
             DockPanel.SetDock(_listBox, Dock.Bottom);
-            var rootPanel = new DockPanel()
+            _leftPanel = new DockPanel()
             {
                 LastChildFill = true,
                 Children =
@@ -51,8 +51,48 @@ namespace Vcpkg.Gui.App
                     _listBox,
                 }
             };
-            Content = rootPanel;
+
+            _rootGrid = _createRootGrid();
+            Content = _rootGrid;
         }
+        private Grid _createRootGrid()
+        {
+            var splitter = new GridSplitter()
+            {
+                //Background = Brushes.DarkRed,
+                Focusable = false,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Stretch,
+            };
+            var logBox = new TextBox()
+            {
+                Text = "Details"
+            };
+            var rootGrid = new Grid()
+            {
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Star) },
+                    new ColumnDefinition() { Width = GridLength.Auto },
+                    new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Star) },
+                },
+
+                Children =
+                {
+                    _leftPanel,
+                    splitter,
+                    logBox,
+                }
+            };
+            
+
+            Grid.SetColumn(_leftPanel, 0);
+            Grid.SetColumn(splitter, 1);
+            Grid.SetColumn(logBox, 2);
+            return rootGrid;
+        }
+        private DockPanel _leftPanel { get; }
+        private Grid _rootGrid { get; }
         private TextBox _searchBox { get; }
         private Button _refreshButton { get; }
         private ListBox _listBox { get; }
@@ -106,7 +146,7 @@ namespace Vcpkg.Gui.App
         {
             var listBox = new ListBox()
             {
-                
+
                 //BorderThickness = new Thickness(4),
                 //BorderBrush = Brushes.Red,
                 ItemTemplate = WidgetDataTemplates.PackageInfoItem

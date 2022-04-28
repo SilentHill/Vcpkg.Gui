@@ -19,7 +19,8 @@ namespace Vcpkg.Gui.App
     {
         public VcpkgGuiMainWindow()
         {
-            //FontFamily = new FontFamily("Microsoft Yahei");
+            // SystemDecorations = SystemDecorations.None;
+            // FontFamily = new FontFamily("Microsoft Yahei");
             ExtendClientAreaToDecorationsHint = true;
             ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
             Title = "VCPKG GUI";

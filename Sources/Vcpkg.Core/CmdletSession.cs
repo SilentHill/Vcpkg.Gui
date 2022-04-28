@@ -9,7 +9,11 @@ namespace Vcpkg.Core
 {
     public abstract class CmdletSession
     {
-        public async Task<String> RunCmdlet(String args, bool lineByLine = false)
+        public async Task RunCmdletWithOutputLineByLine()
+        {
+
+        }
+        public async Task<String> RunCmdlet(String args, bool lineByLine = true)
         {
             String outputString = String.Empty;
             var process = new Process();
