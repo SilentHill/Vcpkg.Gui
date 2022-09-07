@@ -27,7 +27,7 @@ namespace Vcpkg.Core
             if (lineByLine)
             {
                 var sb = new StringBuilder();
-                process.OutputDataReceived += (sender, args) =>
+                process.OutputDataReceived += (sender, args) => 
                 {
                     sb.AppendLine(args.Data);
                 };

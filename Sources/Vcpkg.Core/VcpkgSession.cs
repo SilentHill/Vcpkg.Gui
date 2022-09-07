@@ -12,11 +12,11 @@ namespace Vcpkg.Core
         {
             if (Helpers.IsWindows())
             {
-                CmdletPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\source\repos\vcpkg-2022.04.12\vcpkg.exe";
+                CmdletPath =  Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "source/repos/vcpkg/vcpkg.exe");
             }
             else if (Helpers.IsLinux())
             {
-                CmdletPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/vcpkg/vcpkg";
+                CmdletPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "vcpkg/vcpkg");
             }
             else if (Helpers.IsMacOS())
             {
